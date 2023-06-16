@@ -1,99 +1,81 @@
-<!DOCTYPE html>
-<html>
 <head>
-    <title>To-Do List</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style2.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <div class="container">
-        <h1>To-Do List</h1>
-        <form action="/add" method="POST">
-            <input type="text" name="content" placeholder="Enter task..." required>
-            <button type="submit">Add</button>
-        </form>
-        <ul>
-            {% for todo in todos %}
-                <li class="{% if todo.completed %}completed{% endif %}">
-                    {{ todo.content }}
-                    <div class="actions">
-                        <a href="/complete/{{ todo.id }}">Complete</a>
-                        <a href="/delete/{{ todo.id }}">Delete</a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</body>
-</html>
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    
-    <title>To-Do List App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
-</head>
-<body>
-    <h1>To-Do List</h1>
-
-    <form action="/add" method="POST">
-        <div>
-            <label>Todo Title</label>
-            <input type="text" name="task" placeholder="New task"/>
-            <button type="submit">Add</button>
-        </div>
-    </form>
-
-    <hr>
-    {% for todo in tasks %}
-    <p>{{todo.id }} | {{ todo.title }}</p>
-    <a href="/delete/{{ todo.id }}">Delete</a>
-    {% endfor %}
-     <ul>
-        {% for i, task in enumerate(tasks) %}
-            <li>{{ task }} <a href="{{ url_for('delete', task_id=i) }}">[X]</a></li>
-        {% endfor %}
-    </ul>  -->
-<!-- </body>
-</html>  --> 
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
-</head>
-
-<body>
-
-    <h1>To Do App</h1>
-
-    <form action="/add" method="post">
-        <div>
-            <label>Todo Title</label>
-            <input type="text" name="title" placeholder="Enter Todo...">
+<section class="vh-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-12 col-xl-10">
+  
+          <div class="card mask-custom">
+            <div class="card-body p-4 text-white">
+  
+              <div class="text-center pt-3 pb-2">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                  alt="Check" width="60">
+                <h2 class="my-4">Task List</h2>
+                <br>
+                <br>
+            <form action="{{url_for('add')}}" method="post">
+                <input type="text" name="todo" placeholder="New task">
+                <button type="submit">Add</button>
+        
+            </form> 
+              </div>
+  
+              <table class="table text-white mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for todo in todo_list %} 
+                  <tr class="fw-normal">
+                    <!-- <th>
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                        alt="avatar 1" style="width: 45px; height: auto;">
+                      <span class="ms-2">Alice Mayer</span>
+                    </th> -->
+                    <td class="align-middle">
+                        <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
+                    </td>
+                    <td class="align-middle">
+                        <form action="{{url_for('check',id=loop.index0)}}">
+                            <input type="checkbox" name="done" class="checkbox-input" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
+                        </form>
+                        <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a>
+                    </td>
+                    {%endfor%}
+                </tbody>
+              </table>
+  
+              <form action="{{url_for('generate_action')}}">
+                <button type="submit">Generate Next Steps</button>        
+            </form>
+         
+        
             <br>
-            <button type="submit">Add</button>
+            <div class="box">
+                <ul>
+                    {% for todo in action_list %}
+                    <li>
+                        <form action="{{url_for('check_step',id=loop.index0)}}">
+                            <input type="checkbox" class = "checkbox-input" name="done" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
+                        </form>
+                        <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
+                        <br>
+                        <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
+                  
+                    </li>
+                {%endfor%}
+            </ul>
         </div>
-    </form>
-
-    <hr>
-
-    {% for todo in todo_list %}
-
-    <p>{{todo.id }} | {{ todo.title }}</p>
-
-    {% if todo.complete == False %}
-    <span>Not Complete</span>
-    {% else %}
-    <span>Completed</span>
-    {% endif %}
-
-    <a href="/update/{{ todo.id }}">Update</a>
-    <a href="/delete/{{ todo.id }}">Delete</a>
-
-    {% endfor %}
-</body>
-
-</html> -->
+        
+            </div>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  </section>

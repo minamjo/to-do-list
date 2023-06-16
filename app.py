@@ -13,7 +13,7 @@ action_list = []
 
 @app.route("/")
 def index():
-    return render_template("index.html",todo_list=todo_list,action_list=action_list)
+    return render_template("index.html",todo_list=todo_list,action_list=action_list,action_len=len(action_list))
 
 @app.route("/add",methods=["POST"])
 def add():
@@ -69,7 +69,7 @@ def generate_action():
         response = openai.Completion.create(model="text-davinci-003",
                                         prompt=generate_prompt(li['task']),
                                         temperature=0.6,
-                                        max_tokens=256,
+                                        max_tokens=200,
                                         top_p=1,
                                         frequency_penalty=0,
                                         presence_penalty=0
@@ -92,15 +92,16 @@ def generate_action():
 
 def generate_prompt(task):
     return """Given information about a task, suggest three action steps to take.
-
+Desired Format:
+Suggestion 1, suggestion 2, and suggestion 3
 Task: Study for a math test
-Next Steps: Review notes and class material, Practice math problems related to the topics being tested, Make a study plan and set aside dedicated time to study.
+Next Steps: Review notes and class material, Practice math problems related to the topics being tested, and make a study plan and set aside dedicated time to study.
 Task: Practice for a job interview
-Next Steps: Research the company and potential questions thoroughly, Create a list of talking points, Rehearse talking points in front of a mirror or with a friend
+Next Steps: Research the company and potential questions thoroughly, create a list of talking points, and rehearse talking points in front of a mirror or with a friend
 Task: Clean the kitchen
-Next Steps: Empty the dishwasher, wipe down counters and appliances, sweep and mop the floor
+Next Steps: Empty the dishwasher, wipe down counters and appliances, and sweep and mop the floor
 Task: Train for a marathon
-Next Steps: Follow a training plan, increase mileage gradually, get enough rest and nutrition
+Next Steps: Follow a training plan, increase mileage gradually, and get enough rest and nutrition
 Task: {}
 Next Steps: """.format(task)
 
