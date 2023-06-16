@@ -32,19 +32,7 @@ def check(id):
 def check_step(id):
     action_list[id]['done']=not action_list[id]['done']
     todo_list[id]['done']=not todo_list[id]['done']
-    print("get checked bitch")
-    print(action_list[id]['done'])
-    print(todo_list[id]['done'])
     return redirect(url_for('index'))
-
-@app.route("/edit/<int:id>")
-def edit(id):
-    todo = todo_list[id]
-    if request.method == "POST":
-        todo['task'] = request.form["todo"]
-        return redirect(url_for("index"))
-    else:
-        return render_template("edit.html",todo=todo,id=id)
 
 @app.route("/delete/<int:id>")
 def delete(id):
@@ -60,14 +48,12 @@ def delete_step(id):
 
 @app.route("/generate_action")
 def generate_action():
-    # if request.method == "POST":
-    # todo_strings = ', '.join(todo_list)
     global action_list
     action_list.clear()
-    for li in todo_list:
+    for i in range(len(todo_list)):
         act_dict = dict()
         response = openai.Completion.create(model="text-davinci-003",
-                                        prompt=generate_prompt(li['task']),
+                                        prompt=generate_prompt(todo_list[i]['task']),
                                         temperature=0.6,
                                         max_tokens=200,
                                         top_p=1,
@@ -75,19 +61,9 @@ def generate_action():
                                         presence_penalty=0
                                         )
         act_dict['task'] = response.choices[0].text
-        act_dict['done']= li['done']
+        act_dict['done']= todo_list[i]['done']
+        act_dict['id']= i
         action_list.append(act_dict)
-        print(li['task'])
-        print(response.choices[0].text)
-    # response = openai.Completion.create(model="text-davinci-003",
-    #                                     prompt=generate_prompt("Study for math test"),
-    #                                     temperature=0.6)
-    # act_dict=dict()
-    # act_dict['task'] = response.choices[0].text
-    
-    # response = openai.Completion.create(model="text-davinci-003",
-    #                                     prompt=generate_prompt(todo_list),
-    #                                     temperature=0.6)
     return redirect(url_for("index"))
 
 def generate_prompt(task):
@@ -104,9 +80,6 @@ Task: Train for a marathon
 Next Steps: Follow a training plan, increase mileage gradually, and get enough rest and nutrition
 Task: {}
 Next Steps: """.format(task)
-
-
-
 
 
 if __name__ == '__main__':

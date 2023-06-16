@@ -2,183 +2,96 @@
 <html lang="en">
 
     <head>
-    <meta charset="UTF-8">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <title>Todo App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script> -->
-</head>
+        <meta charset="UTF-8">
+        <title>Todo App</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    </head>
 
-<!-- <body> -->
-    <!-- <div style="margin-top: 50px;" class="ui container"> -->
         <section class="vh-100 gradient-custom-2">
-            <!-- <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                  <div class="col-md-12 col-xl-10">
-            
-                    <div class="card mask-custom"> 
-                      <div class="card-body p-4 text-white">
-            
-                        <div class="text-center pt-3 pb-2"> -->
-                            <div class="card mask-custom"> 
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
-                            alt="Check" width="60">
-                            <!-- </div> -->
-        <h1 class="my-4">Your To-Do List</h1> <img src="{{ url_for('static', filename='to-do-list-art.png') }}" class="icon" />
-        <br>
-        <br>
-    <form action="{{url_for('add')}}" method="post">
-        <input type="text" name="todo" placeholder="New task">
-        <button type="submit">Add</button>
-
-    </form> 
-    <br>
-    <!-- <div class="box"> -->
-    <table class="align-items-center">
-        <thead>
-            <tr>
-              <th scope="col">Task</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-        {% for todo in todo_list %}
-        <tr class="fw-normal">
-            <td class="align-middle">
-                <!-- <div class="box"> -->
-                <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
-            <!-- </div> -->
-            </td>
-            <td class="align-middle">
-                <form action="{{url_for('check',id=loop.index0)}}">
-                    <input type="checkbox" name="done" class="checkbox-input" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
-                </form>
-                <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a>
-            </td>
-          </tr>
-            <!-- <tr class="fw-normal">
-                <th class="align-middle">
-                    <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
-                -->
-                <!-- <a href = "{{ url_for('check',id=loop.index0)}}">Check</a> -->
-                <!-- <a href="{{ url_for('edit',id=loop.index0)}}">Edit</a> -->
-                <!-- <br> -->
-                <!-- </th>
-                <td class="align-middle">
-                    <form action="{{url_for('check',id=loop.index0)}}">
-                        <input type="checkbox" name="done" class="checkbox-input" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
-                    </form>
-                    <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a>
-                </td>
-                </tr> -->
-                
-
-
-                <!-- og code
-                     <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
-                <label><input type="checkbox" name="done" {% if todo['done']%} checked {%endif%} onchange="this.form.submit()"></label>
-                
-                <a href = "{{ url_for('check',id=loop.index0)}}">Check</a> -->
-                <!-- <a href="{{ url_for('edit',id=loop.index0)}}">Edit</a> -->
-                <!-- <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a> -->
-                
-
-            
-        {%endfor%}
-    </table>
-    <br>
-    <br>
-<!-- </div>    -->
-    <!-- <form action="">
-        <div>
-            <label for ="task">To-do Task</label>
-            <input type="text" name="task" placeholder="Enter task...">
-            <br>
-            <button type="submit">Add</button>
-        </div>
-    </form> -->
-
-    <form action="{{url_for('generate_action')}}">
-        <button type="submit">Generate Next Steps</button>
-        <!-- {% if action_list %} -->
-        <!-- <div class="box">
-        <ul>
-            {% for todo in action_list %}
-            <li>
-                <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
-                <form action="{{url_for('check_step',id=loop.index0)}}">
-                <input type="checkbox" name="done" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
-            </form>
-                <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
-          
-            </li>
-        {%endfor%}
-    </ul>
-</div> -->
-<!-- {%endif%} -->
-
-    </form>
- <!-- <div aria-hidden="true"><h2>Next Steps:</h2></div> -->
- 
-
-    <br>
-    {%if action_len > 0%}
-    <table class="align-items-center">
-        <thead>
-            <tr>
-              <th scope="col">Next Steps</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for todo in action_list %}
-            <tr>
-                <td>
-                    <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
-                </td>
-                <td>
-                    <form action="{{url_for('check_step',id=loop.index0)}}">
-                        <input type="checkbox" class = "checkbox-input" name="done" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
-                    </form>
-                    <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
-                </td>
-            </tr>
-            {%endfor%}
-            </tbody>
-            </table>
-{%endif%}
-    <!-- <div class="box"> -->
-        <!-- <ul>
-            {% for todo in action_list %}
-            <li>
-                <form action="{{url_for('check_step',id=loop.index0)}}">
-                    <input type="checkbox" class = "checkbox-input" name="done" style="float:right"{% if todo['done']%} checked {%endif%} onchange="this.form.submit()">
-                </form>
-                <span {%if todo['done']%} style="text-decoration: line-through"{%endif%}>{{todo['task']}}</span>
+            <div class="card mask-custom">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp" alt="Check"
+                    width="60">
+                <h1>Your To-Do List</h1> 
                 <br>
-                <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
-          
-            </li>
-        {%endfor%}
-    </ul>
-</div> -->
+                <br>
+                <form action="{{url_for('add')}}" method="post">
+                    <input type="text" name="todo" placeholder="New task">
+                    <button type="submit">Add</button>
+        
+                </form>
+                <br>
 
-    <!-- {% if action_list %}
-  <div class="action step">{{ action_list[0]['task'] }}</div>
-  {% endif %} -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Task</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
 
-  
-<!-- </body> -->
+                    <tbody>
+                        {% for todo in todo_list %}
+                        <tr>
+                            <td>
+                                <span {%if todo['done']%} style="text-decoration: line-through"
+                                    {%endif%}>{{todo['task']}}</span>
+                            </td>
+                            <td>
+                                <div class="checkbox-delete-wrapper">
+                                    <form action="{{url_for('check',id=loop.index0)}}">
+                                        <input type="checkbox" name="done" class="checkbox-input" style="float:right" {% if todo['done']%} checked
+                                            {%endif%} onchange="this.form.submit()">
+                                    </form>
+                                    <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>   
+                        {%endfor%}
+                </table>
+                <br>
+                <br>
 
-<!-- </div>
-</div>
-
-</div>
-</div>
-</div> -->
-</div>
-</section>
+                <form action="{{url_for('generate_action')}}">
+                    <button type="submit">Generate Next Steps</button>
+                </form>
+        
+                <br>
+                {%if action_len > 0%}
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Next Steps</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for todo in action_list %}
+                        <tr>
+                            <td>
+                                <span><strong>{{todo_list[todo['id']]['task']+":"}}</strong></span>
+                                <span {%if todo['done']%} style="text-decoration: line-through"
+                                    {%endif%}>{{todo['task']}}</span>
+                            </td>
+                            <td>
+                                <div>
+                                    <form action="{{url_for('check_step',id=loop.index0)}}">
+                                        <input type="checkbox" class="checkbox-input" name="done" style="float:right" {% if todo['done']%} checked
+                                            {%endif%} onchange="this.form.submit()">
+                                    </form>
+                                    <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+                {%endif%}
+                <br>
+            </div>
+        </section>
+        <footer></footer>
 
 </html>    
 
