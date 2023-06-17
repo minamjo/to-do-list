@@ -47,7 +47,6 @@ def delete(id):
 @app.route("/delete_step/<int:id>")
 def delete_step(id):
     del action_list[id]
-    # del todo_list[id]
     return redirect(url_for("index"))
 
 @app.route("/generate_action")
