@@ -10,6 +10,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 todo_list = [{"task": "Study for math test","done":False}]
 
+
 action_list = []
 
 @app.route("/")
@@ -25,14 +26,15 @@ def add():
 @app.route("/check/<int:id>")
 def check(id):
     todo_list[id]['done']=not todo_list[id]['done']
-    if id < len(action_list):
+    if len(todo_list) == len(action_list):
         action_list[id]['done']=not action_list[id]['done']
     return redirect(url_for('index'))
 
 @app.route("/check_step/<int:id>")
 def check_step(id):
     action_list[id]['done']=not action_list[id]['done']
-    todo_list[id]['done']=not todo_list[id]['done']
+    if len(action_list) == len(todo_list):
+        todo_list[id]['done']=not todo_list[id]['done']
     return redirect(url_for('index'))
 
 @app.route("/delete/<int:id>")
@@ -45,26 +47,29 @@ def delete(id):
 @app.route("/delete_step/<int:id>")
 def delete_step(id):
     del action_list[id]
+    # del todo_list[id]
     return redirect(url_for("index"))
 
 @app.route("/generate_action")
 def generate_action():
     global action_list
-    action_list.clear()
-    for i in range(len(todo_list)):
-        act_dict = dict()
-        response = openai.Completion.create(model="text-davinci-003",
-                                        prompt=generate_prompt(todo_list[i]['task']),
-                                        temperature=0.6,
-                                        max_tokens=200,
-                                        top_p=1,
-                                        frequency_penalty=0,
-                                        presence_penalty=0
-                                        )
-        act_dict['task'] = response.choices[0].text
-        act_dict['done']= todo_list[i]['done']
-        act_dict['id']= i
-        action_list.append(act_dict)
+    if len(action_list) != len(todo_list):
+        action_list.clear()
+        for i in range(len(todo_list)):
+            act_dict = dict()
+            response = openai.Completion.create(model="text-davinci-003",
+                                            prompt=generate_prompt(todo_list[i]['task']),
+                                            temperature=0.6,
+                                            max_tokens=200,
+                                            top_p=1,
+                                            frequency_penalty=0,
+                                            presence_penalty=0
+                                            )
+            act_dict['task']= todo_list[i]['task']
+            act_dict['action'] = response.choices[0].text
+            act_dict['done']= todo_list[i]['done']
+        
+            action_list.append(act_dict)
     return redirect(url_for("index"))
 
 def generate_prompt(task):

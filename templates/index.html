@@ -70,9 +70,8 @@
                         {% for todo in action_list %}
                         <tr>
                             <td>
-                                <!-- <span></span> -->
                                 <span {%if todo['done']%} style="text-decoration: line-through"
-                                    {%endif%}><strong>{{todo_list[todo['id']]['task']+":"}}</strong>{{todo['task']}}</span>
+                                    {%endif%}><strong>{{todo['task']+":"}}</strong>{{todo['action']}}</span>
                             </td>
                             <td>
                                 <div>
