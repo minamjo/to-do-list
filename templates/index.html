@@ -65,14 +65,14 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    
+
                     <tbody>
                         {% for todo in action_list %}
                         <tr>
                             <td>
-                                <span><strong>{{todo_list[todo['id']]['task']+":"}}</strong></span>
+                                <!-- <span></span> -->
                                 <span {%if todo['done']%} style="text-decoration: line-through"
-                                    {%endif%}>{{todo['task']}}</span>
+                                    {%endif%}><strong>{{todo_list[todo['id']]['task']+":"}}</strong>{{todo['task']}}</span>
                             </td>
                             <td>
                                 <div>
