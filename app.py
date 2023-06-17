@@ -7,7 +7,7 @@ import openai
 
 app = Flask(__name__,template_folder="templates")
 openai.api_key = os.getenv("OPENAI_API_KEY")
-# load_dotenv()
+# load_dotenv
 todo_list = [{"task": "Study for math test","done":False}]
 
 action_list = []
