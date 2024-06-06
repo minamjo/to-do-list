@@ -56,16 +56,17 @@ def generate_action():
         action_list.clear()
         for i in range(len(todo_list)):
             act_dict = dict()
-            response = openai.Completion.create(model="text-davinci-003",
-                                            prompt=generate_prompt(todo_list[i]['task']),
-                                            temperature=0.6,
-                                            max_tokens=200,
-                                            top_p=1,
-                                            frequency_penalty=0,
-                                            presence_penalty=0
+            task_gen = todo_list[i]['task']
+            system_msg ="You are an assistant that helps generate action steps for given tasks."
+            msgs = f"suggest three action steps to take for {task_gen}."
+          #  messages = system_msg+msgs
+            response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
+                                            messages=[{"role":"system","content":system_msg},
+                                                        {"role":"user", "content":msgs}],
+                                            temperature=0.7
                                             )
             act_dict['task']= todo_list[i]['task']
-            act_dict['action'] = response.choices[0].text
+            act_dict['action'] = response["choices"][0]['message']['content']
             act_dict['done']= todo_list[i]['done']
         
             action_list.append(act_dict)
