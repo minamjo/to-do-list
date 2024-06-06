@@ -72,21 +72,6 @@ def generate_action():
             action_list.append(act_dict)
     return redirect(url_for("index"))
 
-def generate_prompt(task):
-    return """Given information about a task, suggest three action steps to take.
-Desired Format:
-Suggestion 1, suggestion 2, and suggestion 3
-Task: Study for a math test
-Next Steps: Review notes and class material, Practice math problems related to the topics being tested, and make a study plan and set aside dedicated time to study.
-Task: Practice for a job interview
-Next Steps: Research the company and potential questions thoroughly, create a list of talking points, and rehearse talking points in front of a mirror or with a friend
-Task: Clean the kitchen
-Next Steps: Empty the dishwasher, wipe down counters and appliances, and sweep and mop the floor
-Task: Train for a marathon
-Next Steps: Follow a training plan, increase mileage gradually, and get enough rest and nutrition
-Task: {}
-Next Steps: """.format(task)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
