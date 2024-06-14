@@ -34,13 +34,13 @@
                         {% for todo in todo_list %}
                         <tr>
                             <td>
-                                <span {%if todo['done']%} style="text-decoration: line-through"
+                                <span {%if todo['complete']%} style="text-decoration: line-through"
                                     {%endif%}>{{todo['task']}}</span>
                             </td>
                             <td>
                                 <div class="checkbox-delete-wrapper">
                                     <form action="{{url_for('check',id=loop.index0)}}">
-                                        <input type="checkbox" name="done" class="checkbox-input" style="float:right" {% if todo['done']%} checked
+                                        <input type="checkbox" name="done" class="checkbox-input" style="float:right" {% if todo['complete']%} checked
                                             {%endif%} onchange="this.form.submit()">
                                     </form>
                                     <a href="{{ url_for('delete',id=loop.index0)}}">Delete</a>
@@ -70,13 +70,13 @@
                         {% for todo in action_list %}
                         <tr>
                             <td>
-                                <span {%if todo['done']%} style="text-decoration: line-through"
-                                    {%endif%}><strong>{{todo['task']+": "}}</strong>{{todo['action']}}</span>
+                                <span {%if todo['complete']%} style="text-decoration: line-through"
+                                    {%endif%}><strong>{{todo['task']+": "}}</strong>{{todo['next_steps']}}</span>
                             </td>
                             <td>
                                 <div>
                                     <form action="{{url_for('check_step',id=loop.index0)}}">
-                                        <input type="checkbox" class="checkbox-input" name="done" style="float:right" {% if todo['done']%} checked
+                                        <input type="checkbox" class="checkbox-input" name="done" style="float:right" {% if todo['complete']%} checked
                                             {%endif%} onchange="this.form.submit()">
                                     </form>
                                     <a href="{{ url_for('delete_step',id=loop.index0)}}">Delete</a>
